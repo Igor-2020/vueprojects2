@@ -21,7 +21,7 @@
 .v-header-wrapper {
    border-style: solid;
    border-color: red;
-   height: 256px;
+   height: 50px;
    display: flex;
 }
 

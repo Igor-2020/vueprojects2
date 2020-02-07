@@ -41,13 +41,8 @@
 </script>
 <style>
 .v-main-wrapper {
-    display: flex;
-    justify-content:center;
-    align-items:center;
     max-width: 900px;
     margin: 0 auto;
-    flex-direction: column;
-     border-style: solid;
-   border-color: red;
+
 }
 </style>
