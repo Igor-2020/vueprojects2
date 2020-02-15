@@ -4,6 +4,7 @@
         <v-catalog/>
         <v-cart/>
         <p>{{title}}</p>
+        <temp/>
     </div>
 </template>
 
@@ -11,13 +12,15 @@
     import vHeaderWrapper from "./v-header-wrapper.vue"
     import vCatalog from "./v-catalog.vue"
     import vCart from "./v-cart.vue"
+    import temp from "./temp.vue"
 
     export default {
         name: "v-main-wrapper",
         components:{
             vHeaderWrapper,
             vCatalog,
-            vCart
+            vCart,
+            temp
         },
         props:{
         },

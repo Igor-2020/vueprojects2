@@ -1,11 +1,18 @@
 <template>
     <div class='v-catalog'>
         <h1>Catalog</h1>
+
         <div class="v-catalog__list">
             <v-catalog-item
                     v-for="product in PRODUCTS"
                     :key="product.article"
                     :product_data="product"
+                    @addToCart="addToCart"
+            />
+            <v-catalog-item
+                    v-for="item in ITEMS"
+                    :key="item.id"
+                    :item_data="item"
                     @addToCart="addToCart"
             />
         </div>
@@ -15,6 +22,7 @@
 <script>
   import vCatalogItem from './v-catalog-item'
   import {mapActions, mapGetters} from 'vuex'
+
   export default {
     name: "v-catalog",
     components: {
@@ -23,15 +31,21 @@
     props: {},
     data() {
       return {
+
       }
     },
+
     computed: {
       ...mapGetters([
         'PRODUCTS',
       ]),
+      ...mapGetters([
+        'ITEMS',
+      ]),
     },
     methods: {
       ...mapActions([
+        'GET_ITEMS_FROM_API',
         'GET_PRODUCTS_FROM_API',
         'ADD_TO_CART'
       ]),
@@ -40,12 +54,21 @@
       }
     },
     mounted() {
+
+      this.GET_ITEMS_FROM_API()
+      .then((response) => {
+        if (response.data) {
+          console.log('Data ITEMS YESS!'+response)
+        }
+      }),
+
       this.GET_PRODUCTS_FROM_API()
       .then((response) => {
         if (response.data) {
           console.log('Data arrived!')
         }
       })
+
     }
   }
 </script>

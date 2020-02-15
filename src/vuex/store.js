@@ -7,11 +7,15 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
   state: {
     products: [],
-    cart: []
+    cart: [],
+    items: []
   },
   mutations: {
     SET_PRODUCTS_TO_STATE: (state, products) => {
       state.products = products;
+    },
+    SET_ITEMS_TO_STATE: (state, items) => {
+          state.items = items;
     },
     SET_CART: (state, product) => {
       if (state.cart.length) {
@@ -34,6 +38,16 @@ let store = new Vuex.Store({
     }
   },
   actions: {
+
+    GET_ITEMS_FROM_API({commit}){
+        return axios('http://localhost:8081/items', {method: 'GET'})
+                .then((items)=>{commit('SET_ITEMS_TO_STATE',items.data)
+                    return items;
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
+    },
     GET_PRODUCTS_FROM_API({commit}) {
       return axios('http://localhost:3000/products', {
         method: "GET"
@@ -55,6 +69,9 @@ let store = new Vuex.Store({
     }
   },
   getters: {
+    ITEMS(state){
+        return state.items
+    },
     PRODUCTS(state) {
       return state.products;
     },
