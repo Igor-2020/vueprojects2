@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Комментарии от разработчика
+Проэкт создан для обучения и vue js, это фронтэнд разработка, не в коем случает не для коммерческого использования
