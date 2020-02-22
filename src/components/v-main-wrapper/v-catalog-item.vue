@@ -1,8 +1,8 @@
 <template>
     <div class="v-catalog-item">
-        <img class="v-catalog-item__image" :src=" require('../../assets/images/' + product_data.image) " alt="img">
-        <p class="v-catalog-item__name">{{product_data.name}}</p>
-        <p class="v-catalog-item__price">Цена: {{product_data.price}} тнг.</p>
+        <img class="v-catalog-item__image" :src=" require('../../assets/images/' + item_data.image) " alt="img">
+        <p class="v-catalog-item__name">{{item_data.name}}</p>
+        <p class="v-catalog-item__price">Цена: {{item_data.price}} тнг.</p>
         <button
                 class="v-catalog-item__add_to_cart_btn btn"
                 @click="sendDataToParent">
@@ -16,7 +16,7 @@
     export default {
         name: "v-catalog-item",
         props: {
-            product_data:{
+            item_data:{
                 type: Object,
                 default(){
                     return{
@@ -26,7 +26,7 @@
         },
         methods:{
             sendDataToParent(){
-                this.$emit('sendArticle',this.product_data.article)
+                this.$emit('sendArticle',this.item_data.article)
             }
         }
     };
@@ -40,5 +40,6 @@
         &__image {
             width: 100px;
         }
+
     }
 </style>

@@ -1,36 +1,37 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import VueSession from 'vue-session'
 
+
+Vue.use(VueSession);
 Vue.use(Vuex);
+
 
 let store = new Vuex.Store({
   state: {
-    products: [],
-    cart: [],
-    items: []
+   cart: [],
+   items: []
   },
   mutations: {
-    SET_PRODUCTS_TO_STATE: (state, products) => {
-      state.products = products;
-    },
+
     SET_ITEMS_TO_STATE: (state, items) => {
           state.items = items;
     },
-    SET_CART: (state, product) => {
+    SET_CART: (state, item) => {
       if (state.cart.length) {
-        let isProductExists = false;
+        let isItemExists = false;
         state.cart.map(function (item) {
-          if (item.article === product.article) {
-            isProductExists = true;
+          if (item.article === item.article) {
+            isItemExists = true;
             item.quantity++
           }
         })
-        if (!isProductExists) {
-          state.cart.push(product)
+        if (!isItemExists) {
+          state.cart.push(item)
         }
       } else {
-        state.cart.push(product)
+        state.cart.push(item)
       }
     },
     REMOVE_FROM_CART: (state, index) => {
@@ -48,19 +49,6 @@ let store = new Vuex.Store({
                     console.log(error)
                 })
     },
-    GET_PRODUCTS_FROM_API({commit}) {
-      return axios('http://localhost:3000/products', {
-        method: "GET"
-      })
-        .then((products) => {
-          commit('SET_PRODUCTS_TO_STATE', products.data);
-          return products;
-        })
-        .catch((error) => {
-          console.log(error)
-          return error;
-        })
-    },
     ADD_TO_CART({commit}, product) {
       commit('SET_CART', product);
     },
@@ -71,9 +59,6 @@ let store = new Vuex.Store({
   getters: {
     ITEMS(state){
         return state.items
-    },
-    PRODUCTS(state) {
-      return state.products;
     },
     CART(state) {
       return state.cart;

@@ -1,20 +1,34 @@
 <template>
   <div id="app">
-   <!-- <img alt="Vue logo" src="./assets/logo.png">-->
-    <v-main-wrapper />
+      <keep-alive>
+      <router-view>
+        {{ip_user}}
+      </router-view>
+      </keep-alive>
 
   </div>
 </template>
 
 <script>
-import vMainWrapper from './components/v-main-wrapper/v-main-wrapper'
+
+    import axios from 'axios'
+    let getIP = 'https://api.ipify.org?format=json'
+
 
 export default {
   name: 'app',
-  components: {
-    vMainWrapper
-  }
+    data(){
+      return{
+          ip_user: []
+      }
+    },
+    mounted() {
+        axios.get(getIP)
+            .then(response => (this.ip_user = JSON.stringify(response.data)))
+            .catch(error => console.log(error));
+    }
 }
+
 </script>
 
 <style>
@@ -24,6 +38,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 </style>

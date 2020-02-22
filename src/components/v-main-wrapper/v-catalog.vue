@@ -4,12 +4,6 @@
 
         <div class="v-catalog__list">
             <v-catalog-item
-                    v-for="product in PRODUCTS"
-                    :key="product.article"
-                    :product_data="product"
-                    @addToCart="addToCart"
-            />
-            <v-catalog-item
                     v-for="item in ITEMS"
                     :key="item.id"
                     :item_data="item"
@@ -31,22 +25,17 @@
     props: {},
     data() {
       return {
-
       }
     },
 
     computed: {
-      ...mapGetters([
-        'PRODUCTS',
-      ]),
-      ...mapGetters([
+        ...mapGetters([
         'ITEMS',
       ]),
     },
     methods: {
       ...mapActions([
         'GET_ITEMS_FROM_API',
-        'GET_PRODUCTS_FROM_API',
         'ADD_TO_CART'
       ]),
       addToCart(data) {
@@ -60,26 +49,21 @@
         if (response.data) {
           console.log('Data ITEMS YESS!'+response)
         }
-      }),
-
-      this.GET_PRODUCTS_FROM_API()
-      .then((response) => {
-        if (response.data) {
-          console.log('Data arrived!')
-        }
       })
 
-    }
+      }
   }
 </script>
 
 <style lang="scss">
   .v-catalog {
+
     &__list {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
+
     }
   }
 </style>
