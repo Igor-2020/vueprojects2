@@ -1,6 +1,6 @@
 <template>
     <div class='v-catalog'>
-        <h1>Catalog</h1>
+        <h1>Товары</h1>
 
         <div class="v-catalog__list">
             <v-catalog-item
@@ -63,7 +63,8 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-
+        margin-left: 20px;
+        margin-right: 20px;
     }
   }
 </style>

@@ -2,7 +2,7 @@
   <div id="app">
       <keep-alive>
       <router-view>
-        {{ip_user}}
+
       </router-view>
       </keep-alive>
 
@@ -11,21 +11,54 @@
 
 <script>
 
-    import axios from 'axios'
-    let getIP = 'https://api.ipify.org?format=json'
+import {mapActions, mapGetters} from 'vuex'
 
-
-export default {
+  export default {
   name: 'app',
-    data(){
-      return{
-          ip_user: []
-      }
+    data() {
+        return {
+
+        }
     },
+      computed: {
+          ...mapGetters([
+              'IP_CLIENT',
+          ]),
+      },
+      methods: {
+          ...mapActions([
+              'GET_IP_CLIENT',
+          ]),
+          getDataInputClient: function(){
+              return Date.now().toString();
+          }
+      },
     mounted() {
-        axios.get(getIP)
-            .then(response => (this.ip_user = JSON.stringify(response.data)))
-            .catch(error => console.log(error));
+
+        //заполняем данные по сессии
+        this.GET_IP_CLIENT()
+            .then((response) => {
+                if (response.data) {
+                    //TODO: получаем из куки код сессии и id сессиu если их нет то создаем
+                    let session_param = [];
+
+                    this.$session.start();
+                    //ip
+                    session_param.push(response.data.ip);
+                    //session_id
+                    session_param.push(this.$session.id().split(':')[1]);
+                    //session_code
+                    session_param.push(this.session_code = ("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx").replace(/[xy]/g, function(c) {
+                        let r = Math.random() * 16 | 0, v = (c == "x") ? r : (r & 0x3 | 0x8);
+                        return v.toString(16);
+                    }));
+                    //session_data_input_clinet
+                    session_param.push(this.getDataInputClient());
+
+                    console.log("user_data := " + session_param);
+                    this.$session.destroy();
+                }
+            })
     }
 }
 
@@ -38,6 +71,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 0px;
+  margin-top: 0;
+  background-color: dimgray;
 }
 </style>

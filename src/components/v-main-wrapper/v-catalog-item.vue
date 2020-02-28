@@ -6,7 +6,7 @@
         <button
                 class="v-catalog-item__add_to_cart_btn btn"
                 @click="sendDataToParent">
-            Add to cart
+            В корзину
         </button>
     </div>
 

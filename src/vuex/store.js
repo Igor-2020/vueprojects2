@@ -7,14 +7,20 @@ import VueSession from 'vue-session'
 Vue.use(VueSession);
 Vue.use(Vuex);
 
+const backendApiItems = 'http://localhost:8081/items';
+const getIPApi = 'https://api.ipify.org/?format=json';
 
 let store = new Vuex.Store({
   state: {
    cart: [],
-   items: []
+   items: [],
+   ipClient: [],
   },
   mutations: {
 
+    SET_IP_CLIENT_TO_STATE:(state, ipClient) =>{
+      state.ipClient=ipClient;
+    },
     SET_ITEMS_TO_STATE: (state, items) => {
           state.items = items;
     },
@@ -40,8 +46,17 @@ let store = new Vuex.Store({
   },
   actions: {
 
+    GET_IP_CLIENT({commit}){
+      return axios(getIPApi,{method: 'GET'})
+          .then((response)=>{commit('SET_IP_CLIENT_TO_STATE',response.data.ip)
+            return response;
+          })
+          .catch((error)=>{
+            console.log(error)
+           })
+    },
     GET_ITEMS_FROM_API({commit}){
-        return axios('http://localhost:8081/items', {method: 'GET'})
+        return axios(backendApiItems, {method: 'GET'})
                 .then((items)=>{commit('SET_ITEMS_TO_STATE',items.data)
                     return items;
                 })
@@ -57,8 +72,11 @@ let store = new Vuex.Store({
     }
   },
   getters: {
+    IP_CLIENT(state){
+      return state.ipClient;
+    },
     ITEMS(state){
-        return state.items
+        return state.items;
     },
     CART(state) {
       return state.cart;
