@@ -2,23 +2,28 @@
     <div class="v-main-wrapper">
         <v-header-wrapper/>
         <v-catalog/>
-        <v-cart/>
-
+        <v-cart
+            v-if="CART.length"
+            :cart_data="CART"
+        />
+        <v-footer-container/>
     </div>
 </template>
 
 <script>
-    import vHeaderWrapper from "./v-header-wrapper.vue"
+    import  vHeaderWrapper from "./v-header-wrapper.vue"
     import vCatalog from "./v-catalog.vue"
     import vCart from "./v-cart.vue"
-
+    import vFooterContainer from "../v-footer/v-footer-container"
+    import {mapGetters} from 'vuex'
 
     export default {
         name: "v-main-wrapper",
         components:{
             vHeaderWrapper,
-           vCatalog,
-            vCart
+            vCatalog,
+            vCart,
+            vFooterContainer
         },
         props:{
         },
@@ -27,7 +32,11 @@
 
             }
         },
-        computed:{},
+        computed:{
+            ...mapGetters([
+                'CART'
+            ])
+        },
         methods: {},
         watch:{},
     };
@@ -37,7 +46,8 @@
 .v-main-wrapper {
     max-width: 1100px;
     margin: 0 auto;
-    background-color: lightgoldenrodyellow;
+    background-color: #bcccaa;
+
 
 }
 </style>

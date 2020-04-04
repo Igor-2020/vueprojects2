@@ -7,14 +7,36 @@ import VueSession from 'vue-session'
 Vue.use(VueSession);
 Vue.use(Vuex);
 
-const backendApiItems = 'http://localhost:8081/items';
+//backendAPI
+const api='http://localhost:8081/';
+const apiItems = api + 'items';
+const apiSessionData = api + 'sessiondata';
+const apiUser = api+'user';
+const apiCheckUser =apiUser+'/checkUser/';
+
+//foreign
 const getIPApi = 'https://api.ipify.org/?format=json';
+
+//config request
+const contentType = 'application/json';
+const config = {
+    headers: {
+        'Content-Type': contentType
+    }
+};
+
+//other params
+const clientUser = {
+    name: "ClientUser"
+};
+
 
 let store = new Vuex.Store({
   state: {
-   cart: [],
-   items: [],
-   ipClient: [],
+      cart: [],
+      items: [],
+      ipClient: [],
+      sessionData: [],
   },
   mutations: {
 
@@ -42,6 +64,12 @@ let store = new Vuex.Store({
     },
     REMOVE_FROM_CART: (state, index) => {
       state.cart.splice(index, 1)
+    },
+
+    SET_SESSION_DATA: (state, sessionData) =>{
+        if(sessionData) {
+            state.sessionData.push(sessionData);
+        }
     }
   },
   actions: {
@@ -56,7 +84,7 @@ let store = new Vuex.Store({
            })
     },
     GET_ITEMS_FROM_API({commit}){
-        return axios(backendApiItems, {method: 'GET'})
+        return axios(apiItems, {method: 'GET'})
                 .then((items)=>{commit('SET_ITEMS_TO_STATE',items.data)
                     return items;
                 })
@@ -64,12 +92,46 @@ let store = new Vuex.Store({
                     console.log(error)
                 })
     },
-    ADD_TO_CART({commit}, product) {
-      commit('SET_CART', product);
+    ADD_TO_CART({commit}, items) {
+      commit('SET_CART', items);
     },
     DELETE_FROM_CART({commit}, index) {
       commit('REMOVE_FROM_CART', index)
-    }
+    },
+
+    ADD_SESSION_DATA({commit},sessionData){
+       commit('SET_SESSION_DATA',sessionData)
+    },
+    POST_SESSION_DATA(){
+         // const sessionData = this.state.sessionData[0];
+          const _data = JSON.stringify({
+              ip: this.state.sessionData[0][0],
+              sessionId: this.state.sessionData[0][1],
+              sessionCode: this.state.sessionData[0][2],
+              dateInput:this.state.sessionData[0][3],
+              idUser:this.state.sessionData[0][4]
+          });
+          console.log(_data);
+
+          axios.post(apiSessionData, _data, config)
+             .catch((error) => {
+                  console.log(error);
+              });
+      },
+
+    CHECK_USER(){
+          return axios.get(apiCheckUser+clientUser.name)
+              .then((response)=>{
+                  console.log(response);
+                  return response;
+              })
+              .catch((error)=>{
+                  console.log(error);
+                  this.$router.go(1);
+              })
+      },
+
+
   },
   getters: {
     IP_CLIENT(state){
@@ -80,6 +142,9 @@ let store = new Vuex.Store({
     },
     CART(state) {
       return state.cart;
+    },
+    SESSION_DATA(state){
+        return state.sessionData;
     }
   }
 });

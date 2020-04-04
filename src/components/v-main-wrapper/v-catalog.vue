@@ -39,7 +39,8 @@
         'ADD_TO_CART'
       ]),
       addToCart(data) {
-        this.ADD_TO_CART(data)
+        this.ADD_TO_CART(data);
+        console.log(data);
       }
     },
     mounted() {
@@ -47,7 +48,7 @@
       this.GET_ITEMS_FROM_API()
       .then((response) => {
         if (response.data) {
-          console.log('Data ITEMS YESS!'+response)
+          //console.log('Data ITEMS YESS!'+response)
         }
       })
 
